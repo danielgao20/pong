@@ -31,37 +31,37 @@
     <canvas id="pongCanvas" width="640" height="480"></canvas>
     <button id="restartButton">Restart</button>
     <script>
-        // Get canvas and context
+        // get canvas and context
         const canvas = document.getElementById('pongCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Paddle dimensions
+        // paddle dimensions
         const paddleWidth = 10;
         const paddleHeight = 60;
         const paddleSpeed = 5;
 
-        // Ball dimensions
+        // ball dimensions
         const ballSize = 10;
         let ballX;
         let ballY;
         let ballSpeedX;
         let ballSpeedY;
 
-        // Paddle positions
+        // paddle positions
         let paddleAY;
         let paddleBY;
 
-        // Score
+        // score
         let scoreA = 0;
         let scoreB = 0;
 
-        // Initialize game state
+        // initialize game state
         function resetGame() {
-            // Set initial paddle positions
+            // set initial paddle positions
             paddleAY = canvas.height / 2 - paddleHeight / 2;
             paddleBY = canvas.height / 2 - paddleHeight / 2;
 
-            // Set initial ball position and speed
+            // set initial ball position and speed
             ballX = canvas.width / 2 - ballSize / 2;
             ballY = canvas.height / 2 - ballSize / 2;
             ballSpeedX = 2;
@@ -71,7 +71,7 @@
             scoreB = 0;
         }
 
-        // Function to reset ball position and speed
+        // function to reset ball position and speed
         function resetBall() {
             ballX = canvas.width / 2 - ballSize / 2;
             ballY = canvas.height / 2 - ballSize / 2;
@@ -79,14 +79,14 @@
             ballSpeedY = -ballSpeedY; // Reverse ball's vertical direction
         }
 
-        // Draw the game
+        // draw the game
         function drawGame() {
-            // Paddles
+            // paddles
             ctx.fillStyle = 'black';
             ctx.fillRect(5, paddleAY, paddleWidth, paddleHeight);
             ctx.fillRect(canvas.width - paddleWidth - 5, paddleBY, paddleWidth, paddleHeight);
 
-            // Ball
+            // ball
             ctx.fillStyle = 'gray';
             // ctx.fillRect(ballX, ballY, ballSize, ballSize);
             ctx.beginPath();
@@ -94,22 +94,22 @@
             ctx.fill();
 
 
-            // Score
+            // score
             ctx.fillStyle = 'black';
             ctx.font = '20px Verdana';
             ctx.fillText(`Player A: ${scoreA}`, canvas.width / 2 - 200, 30);
             ctx.fillText(`Player B: ${scoreB}`, canvas.width / 2 + 90, 30);
         }
 
-        // Update game state
+        // update game state
         function updateGame() {
-            // Clear canvas
+            // clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw the game
+            // draw the game
             drawGame();
 
-            // Update paddle A position
+            // update paddle A position
             if(upA && paddleAY > 0) {
                 paddleAY -= paddleSpeed;
             }
@@ -117,7 +117,7 @@
                 paddleAY += paddleSpeed;
             }
 
-            // Update paddle B position
+            // update paddle B position
             if(upB && paddleBY > 0) {
                 paddleBY -= paddleSpeed;
             }
@@ -125,11 +125,11 @@
                 paddleBY += paddleSpeed;
             }
 
-            // Update ball position
+            // update ball position
             ballX += ballSpeedX;
             ballY += ballSpeedY;
 
-            // Check collision with paddles
+            // check collision with paddles
             if(ballX < paddleWidth && ballY > paddleAY && ballY < paddleAY + paddleHeight) {
                 ballSpeedX = Math.abs(ballSpeedX);
             }
@@ -143,33 +143,33 @@
             //     ballSpeedX = -Math.abs(ballSpeedX);
             // }
 
-            // Check collision with walls
+            // check collision with walls
             if(ballY < 0 || ballY > canvas.height) {
                 ballSpeedY = -ballSpeedY;
             }
             
-            // Check for game over
+            // check for game over
             if(ballX < 0 || ballX > canvas.width) {
-                // Increment score for the side that scored
+                // increment score for the side that scored
                 if(ballX < 0) {
                     scoreB++;
                 } else {
                     scoreA++;
                 }
 
-                // Pause the game for 1 second before resetting
+                // pause the game for 1 second before resetting
                 setTimeout(() => {
                     resetBall();
                     updateGame();
                 }, 1000);
-                return; // Return early to prevent further game updates during the delay
+                return; // return early to prevent further game updates during the delay
             }
 
-            // Request next frame
+            // request next frame
             requestAnimationFrame(updateGame);
         }
 
-        // Add event listeners for paddle controls
+        // add event listeners for paddle controls
         let upA = false;
         let downA = false;
         let upB = false;
@@ -205,13 +205,13 @@
             }
         });
 
-        // Handle restart button click
+        // handle restart button click
         const restartButton = document.getElementById('restartButton');
         restartButton.addEventListener('click', () => {
             resetGame();
         });
 
-        // Start the game
+        // start the game
         resetGame();
         updateGame();
     </script>
